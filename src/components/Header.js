@@ -43,7 +43,7 @@ const Header = () => {
     });
   }
   return (
-    <div className="absolute w-screen bg-gradient-to-b from-black flex justify-between">
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
 
         <img className="w-36" src={LOGO}
           alt="logo" />
@@ -51,9 +51,9 @@ const Header = () => {
           {
             user && (
               <div className="flex p-2">
-              <h1 className="m-3">Welcome {user.displayName}</h1>
+              <h1 className="m-3 text-white">Welcome {user.displayName}</h1>
               <img className="m-2 right-0" src={user ? user.photoURL : USER_AVATAR} alt="user icon"/>
-              <button className="font-bold text-red-900" onClick={signoutHandler}>Logout</button>
+              <button className="font-bold text-xl text-red-700 cursor-pointer" onClick={signoutHandler}>Logout</button>
             </div>
             )
           }
