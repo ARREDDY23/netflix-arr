@@ -31,13 +31,12 @@ const Login = () => {
 
                       updateProfile(user, {
                         displayName: username.current.value, photoURL: "https://occ-0-4209-3663.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png?r=229"
-                      
                       }).then(() => {
                         // Profile updated!
                         // dispatch is used here as above values are not uploaded to store untill refreshing the page
                         const {uid, email, displayName, photoURL} = auth.currentUser; //auth.curretUser is used as it will fetch latest user data
                         dispatch(addUser({uid : uid, email : email,displayName : displayName, photoURL: photoURL}));
-                        navigate("/browse");
+                        // navigate("/browse");
                       }).catch((error) => {
                         // An error occurred
                         setErrorMessage(error.message)
@@ -55,7 +54,7 @@ const Login = () => {
               .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                navigate("/browse");
+                // navigate("/browse");
                 // ...
               })
               .catch((error) => {

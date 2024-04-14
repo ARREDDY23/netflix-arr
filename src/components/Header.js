@@ -2,15 +2,42 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../utils/firebase';
 import { signOut } from "firebase/auth";
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import {addUser, removeUser} from "../utils/userSlice";
+import { LOGO, USER_AVATAR } from '../utils/constants';
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector(store => store.user);
+
+  useEffect(()=>{
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            const {uid, email, displayName, photoURL} = user;
+            dispatch(addUser({uid : uid, email : email,displayName : displayName, photoURL: photoURL}));
+            navigate("/browse")
+            // ...
+        } else {
+            // User is signed out
+            // ...
+            dispatch(removeUser());
+            navigate("/")
+        }
+    });
+
+    return () => unsubscribe();  // unmounting as every time header loads browser will add new event lister 
+}, [])
 
   const signoutHandler = () => {
       signOut(auth).then(() => {
         // Sign-out successful.
-        navigate("/");
+        // navigate("/");
       }).catch((error) => {
         // An error happened.
     });
@@ -18,14 +45,14 @@ const Header = () => {
   return (
     <div className="absolute w-screen bg-gradient-to-b from-black flex justify-between">
 
-        <img className="w-36" src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+        <img className="w-36" src={LOGO}
           alt="logo" />
 
           {
             user && (
               <div className="flex p-2">
               <h1 className="m-3">Welcome {user.displayName}</h1>
-              <img className="m-2 right-0" src={user ? user.photoURL : "https://occ-0-4209-3663.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTvTV1d97HoOuutIG9GUEJgNIhg89JU3EQmtIikzdqolTLHSDqxwytfl61TC-HlrVt7QrzxdB5xR3nD2CPKNL9TF3qKTmcI.png?r=cad"} alt="user icon"/>
+              <img className="m-2 right-0" src={user ? user.photoURL : USER_AVATAR} alt="user icon"/>
               <button className="font-bold text-red-900" onClick={signoutHandler}>Logout</button>
             </div>
             )
