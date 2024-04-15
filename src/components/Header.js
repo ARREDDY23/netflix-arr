@@ -43,15 +43,17 @@ const Header = () => {
     });
   }
   return (
-    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
+    <div className="absolute w-screen px-2 md:px-8 md:py-2  z-20 flex md:flex-row justify-between">
 
-        <img className="w-36" src={LOGO}
+        <img className="w-20 md:w-36" src={LOGO}
           alt="logo" />
+          {/* <img className="w-20 md:hidden" src={MOBILE_LOGO}
+          alt="logo" /> */}
 
           {
             user && (
               <div className="flex p-2">
-              <h1 className="m-3 text-white">Welcome {user.displayName}</h1>
+              {/* <h1 className="m-3 text-white">Welcome {user.displayName}</h1> */}
               <img className="m-2 right-0" src={user ? user.photoURL : USER_AVATAR} alt="user icon"/>
               <button className="font-bold text-xl text-red-700 cursor-pointer" onClick={signoutHandler}>Logout</button>
             </div>
